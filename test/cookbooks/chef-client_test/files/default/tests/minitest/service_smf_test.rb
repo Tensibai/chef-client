@@ -1,5 +1,8 @@
 #
-# Copyright 2012, Opscode, Inc.
+# Author:: Joshua Timberman <joshua@opscode.com>
+# Cookbook Name:: chef-client_test
+#
+# Copyright 2013, Opscode, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,11 +17,12 @@
 # limitations under the License.
 #
 
-module Helpers
-  # include helpers for minitest
-  module ChefClient
-    include MiniTest::Chef::Assertions
-    include MiniTest::Chef::Context
-    include MiniTest::Chef::Resources
+require File.expand_path('../support/helpers', __FILE__)
+
+describe 'chef-client::smf_service' do
+  include Helpers::ChefClient
+  it 'enables and starts the service with SMF' do
+    service('chef-client').must_be_running
+    file('/lib/svc/method/chef-client').must_exist
   end
 end
